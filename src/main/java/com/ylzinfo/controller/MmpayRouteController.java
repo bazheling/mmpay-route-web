@@ -10,14 +10,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @EnableAutoConfiguration
-@RequestMapping("/testboot")
-public class TestBootController {
+@RequestMapping("/mmpay")
+public class MmpayRouteController {
 
     @Autowired
     private GirlsInfoMapper girlsInfoMapper;
     @RequestMapping("getuser")
     @ResponseBody
     public GirlsInfo getUser() {
+        GirlsInfo girlsInfo = girlsInfoMapper.selectByPrimaryKey(Integer.parseInt("1"));
+        return girlsInfo;
+    }
+
+    @RequestMapping("route")
+    @ResponseBody
+    public GirlsInfo route() {
         GirlsInfo girlsInfo = girlsInfoMapper.selectByPrimaryKey(Integer.parseInt("1"));
         return girlsInfo;
     }
