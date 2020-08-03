@@ -1,4 +1,4 @@
-package com.demo.dao.entity;
+package com.ylzinfo.dao.entity;
 
 import java.io.Serializable;
 

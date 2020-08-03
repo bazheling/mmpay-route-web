@@ -1,6 +1,6 @@
-package com.demo.dao.mappers;
+package com.ylzinfo.dao.mappers;
 
-import com.demo.dao.entity.GirlsInfo;
+import com.ylzinfo.dao.entity.GirlsInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

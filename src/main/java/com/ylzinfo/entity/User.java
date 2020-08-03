@@ -1,4 +1,4 @@
-package com.demo.entity;
+package com.ylzinfo.entity;
 
 public class User {
     private String name;

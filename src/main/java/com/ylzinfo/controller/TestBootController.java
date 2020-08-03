@@ -1,7 +1,7 @@
-package com.demo.controller;
+package com.ylzinfo.controller;
 
-import com.demo.dao.entity.GirlsInfo;
-import com.demo.dao.mappers.GirlsInfoMapper;
+import com.ylzinfo.dao.entity.GirlsInfo;
+import com.ylzinfo.dao.mappers.GirlsInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
