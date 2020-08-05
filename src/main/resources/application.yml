@@ -6,7 +6,8 @@ spring:
 #公共配置与profiles选择无关
 mybatis:
   typeAliasesPackage: com.ylzinfo.dao.entity
-  mapperLocations: classpath:com.ylzinfo.mappers/*.xml
+  mapperLocations: classpath:/dao/*.xml
+
 
 
 ---
@@ -16,7 +17,7 @@ spring:
   profiles: dev
 
   datasource:
-    url: jdbc:mysql://localhost:3306/demo?serverTimezone=UTC
+    url: jdbc:mysql://192.168.44.90:3306/mmp_route?serverTimezone=UTC
     username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ylz@yhkj#2020
+    driver-class-name: com.mysql.jdbc.Driver
