@@ -23,8 +23,6 @@ public class MmpayRouteController {
     @RequestMapping("getuser")
     @ResponseBody
     public GirlsInfo getUser() {
-        LOG.info("!qqqq");
-
         GirlsInfo girlsInfo = girlsInfoMapper.selectByPrimaryKey(Integer.parseInt("1"));
         return girlsInfo;
     }
