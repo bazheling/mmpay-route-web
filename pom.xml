@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.ylzinfo</groupId>
     <artifactId>mmpay-route-web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>l
+    <version>0.0.1-SNAPSHOT</version>
     <name>mmpay-route-web</name>
     <description>Demo project for Spring Boot</description>
 
