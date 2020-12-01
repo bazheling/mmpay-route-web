@@ -32,6 +32,9 @@ public class MessageCode {
 
     public final static String ERROR_APP_ID_ILLEGAL = "010003";
     public final static String ERROR_APP_ID_ILLEGAL_MSG = "应用编号非法";
+    // 未知错误
+    public final static String ERROR_UNKOWN = "999999";
+    public final static String ERROR_UNKOWN_MS = "未知错误";
 
 
 }

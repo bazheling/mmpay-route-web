@@ -1,17 +1,15 @@
 package com.ylzinfo.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ylzinfo.dao.entity.MmpRouteConfig;
 import com.ylzinfo.dao.mappers.MmpRouteConfigMapper;
 import com.ylzinfo.exception.BusinessException;
 import com.ylzinfo.exception.MessageCode;
-import com.ylzinfo.model.RequestParams;
 import com.ylzinfo.service.IMmpayRouteService;
-import com.ylzinfo.util.SecurityUtil;
 import com.ylzinfo.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 查询mmp路由配置实现类
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author xiepy
  * @date 20200805
  */
+@Component("mmpayRouteServiceImpl")
 public class MmpayRouteServiceImpl implements IMmpayRouteService {
 
     private static final Logger logger = LoggerFactory.getLogger(MmpayRouteServiceImpl.class);
@@ -32,12 +31,11 @@ public class MmpayRouteServiceImpl implements IMmpayRouteService {
     public MmpRouteConfig queryMmpayRouteConfig(String appId, String medOrgNo) {
         logger.info("查询路由地址入参，appId:{},medOrgNo:{}", appId, medOrgNo);
 
-        MmpRouteConfig mmpRouteConfig = mmpRouteConfigMapper.selectByMedOrgNo(appId, medOrgNo);
-        if (mmpRouteConfig == null) {
-            mmpRouteConfig = mmpRouteConfigMapper.selectByPrimaryKey(0L);
-
-            return mmpRouteConfig;
+        if (StringUtil.isNotEmpty(medOrgNo)) {
+            appId = medOrgNo;
         }
+
+        MmpRouteConfig mmpRouteConfig = queryByAppId(appId);
 
         if (INVALID_STATUS.equals(mmpRouteConfig.getStatus())) {
             throw new BusinessException(MessageCode.ERROR_CONFIG_STATUS_INVALID, MessageCode.ERROR_CONFIG_STATUS_INVALID_MSG);

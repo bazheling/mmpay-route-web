@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ylzinfo.dao.entity.MmpRouteConfig;
 import com.ylzinfo.enums.EncType;
+import com.ylzinfo.enums.URLType;
 import com.ylzinfo.exception.BusinessException;
 import com.ylzinfo.exception.MessageCode;
 import com.ylzinfo.model.RequestParams;
 import com.ylzinfo.model.ResponseParams;
 import com.ylzinfo.service.IMmpayRouteService;
+import com.ylzinfo.util.HttpUtil;
 import com.ylzinfo.util.SecurityUtil;
 import com.ylzinfo.util.StreamUtil;
 import com.ylzinfo.util.StringUtil;
@@ -18,16 +20,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * @author lcl
+ * @date 2020/12/1
+ */
+
 @Controller
 @EnableAutoConfiguration
-@RequestMapping("/mmpay")
+@RequestMapping("/mmpay-web")
 public class MmpayRouteController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MmpayRouteController.class);
@@ -35,8 +43,10 @@ public class MmpayRouteController {
     @Autowired
     private IMmpayRouteService mmpayRouteService;
 
-    @RequestMapping("route")
-    public void route(HttpServletRequest request, HttpServletResponse response) {
+
+    @RequestMapping(value = "gateway", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseParams<Object> route(HttpServletRequest request, HttpServletResponse response) {
         InputStream inputStream = null;
         InputStreamReader inputStreamReader = null;
         ResponseParams<Object> responseParams = new ResponseParams<Object>();
@@ -55,13 +65,19 @@ public class MmpayRouteController {
 
             }
             MmpRouteConfig mmpRouteConfig = mmpayRouteService.queryMmpayRouteConfig(requestParams.getAppId(), param.getString("medOrgNo"));
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            String resStr = HttpUtil.request(mmpRouteConfig.getMmpWebUrl(), requestMessage, URLType.HTTP);
+            responseParams = JSON.parseObject(resStr, ResponseParams.class);
+        } catch (BusinessException e) {
+            responseParams.setRespCode(e.getErrorCode());
+            responseParams.setRespMsg(e.getMessage());
+            LOG.error("SDK支付出现异常", e);
+        } catch (Exception e) {
+            responseParams.setRespCode(MessageCode.ERROR_UNKOWN);
+            responseParams.setRespMsg(MessageCode.ERROR_UNKOWN_MS);
+            LOG.error("SDK支付出现异常", e);
         }
 
-
+        return responseParams;
     }
 
     private RequestParams parseRequestParam(String requestMessage) {
