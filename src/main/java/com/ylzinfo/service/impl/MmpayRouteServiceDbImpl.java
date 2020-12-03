@@ -5,25 +5,29 @@ import com.ylzinfo.dao.mappers.MmpRouteConfigMapper;
 import com.ylzinfo.exception.BusinessException;
 import com.ylzinfo.exception.MessageCode;
 import com.ylzinfo.service.IMmpayRouteService;
+import com.ylzinfo.util.ApplicationContextUtils;
 import com.ylzinfo.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.thymeleaf.spring5.context.SpringContextUtils;
+
+import javax.swing.*;
 
 /**
  * 查询mmp路由配置实现类
  *
- * @author xiepy
+ * @author xiepy, lcl
  * @date 20200805
  */
-@Component("mmpayRouteServiceImpl")
-public class MmpayRouteServiceImpl implements IMmpayRouteService {
+public class MmpayRouteServiceDbImpl implements IMmpayRouteService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MmpayRouteServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(MmpayRouteServiceDbImpl.class);
 
-    @Autowired
-    private MmpRouteConfigMapper mmpRouteConfigMapper;
 
     public final static Byte INVALID_STATUS = 0;
 
@@ -47,6 +51,7 @@ public class MmpayRouteServiceImpl implements IMmpayRouteService {
 
     @Override
     public MmpRouteConfig queryByAppId(String appId) {
+        MmpRouteConfigMapper mmpRouteConfigMapper = (MmpRouteConfigMapper) ApplicationContextUtils.getBean("mmpRouteConfigMapper");
         MmpRouteConfig mmpRouteConfig = mmpRouteConfigMapper.selectByAppId(appId);
         if (mmpRouteConfig == null) {
             throw new BusinessException(MessageCode.ERROR_APP_ID_ILLEGAL, MessageCode.ERROR_APP_ID_ILLEGAL_MSG);

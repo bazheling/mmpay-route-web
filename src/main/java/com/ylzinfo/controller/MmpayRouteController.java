@@ -2,6 +2,7 @@ package com.ylzinfo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ylzinfo.MmpayRouteProperties;
 import com.ylzinfo.dao.entity.MmpRouteConfig;
 import com.ylzinfo.enums.EncType;
 import com.ylzinfo.enums.URLType;
@@ -10,13 +11,9 @@ import com.ylzinfo.exception.MessageCode;
 import com.ylzinfo.model.RequestParams;
 import com.ylzinfo.model.ResponseParams;
 import com.ylzinfo.service.IMmpayRouteService;
-import com.ylzinfo.util.HttpUtil;
-import com.ylzinfo.util.SecurityUtil;
-import com.ylzinfo.util.StreamUtil;
-import com.ylzinfo.util.StringUtil;
+import com.ylzinfo.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -39,9 +37,6 @@ import java.io.InputStreamReader;
 public class MmpayRouteController {
 
     private static final Logger LOG = LoggerFactory.getLogger(MmpayRouteController.class);
-
-    @Autowired
-    private IMmpayRouteService mmpayRouteService;
 
 
     @RequestMapping(value = "gateway", method = RequestMethod.POST)
@@ -64,6 +59,7 @@ public class MmpayRouteController {
                 throw new BusinessException(MessageCode.ERROR_REQUEST_MSG_EMPTY, MessageCode.ERROR_REQUEST_MSG_EMPTY_MSG);
 
             }
+            IMmpayRouteService mmpayRouteService = AppUtil.getService(Boolean.valueOf(MmpayRouteProperties.getAppWay));
             MmpRouteConfig mmpRouteConfig = mmpayRouteService.queryMmpayRouteConfig(requestParams.getAppId(), param.getString("medOrgNo"));
             String resStr = HttpUtil.request(mmpRouteConfig.getMmpWebUrl(), requestMessage, URLType.HTTP);
             responseParams = JSON.parseObject(resStr, ResponseParams.class);
@@ -79,6 +75,7 @@ public class MmpayRouteController {
 
         return responseParams;
     }
+
 
     private RequestParams parseRequestParam(String requestMessage) {
         /*
@@ -104,7 +101,8 @@ public class MmpayRouteController {
         return requestParams;
     }
 
-    public RequestParams decryptData(RequestParams requestParams, String appId) {
+    public RequestParams decryptData(RequestParams requestParams, String appId) throws IOException {
+        IMmpayRouteService mmpayRouteService = AppUtil.getService(Boolean.valueOf(MmpayRouteProperties.getAppWay));
         MmpRouteConfig mmpRouteConfig = mmpayRouteService.queryByAppId(appId);
         String appSecret = mmpRouteConfig.getAppSecret();
 

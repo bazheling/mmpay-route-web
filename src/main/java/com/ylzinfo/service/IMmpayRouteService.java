@@ -3,6 +3,8 @@ package com.ylzinfo.service;
 import com.ylzinfo.dao.entity.MmpRouteConfig;
 import com.ylzinfo.model.RequestParams;
 
+import java.io.IOException;
+
 /**
  * mmp路由接口
  *
@@ -18,7 +20,7 @@ public interface IMmpayRouteService {
      * @param medOrgNo
      * @return
      */
-    MmpRouteConfig queryMmpayRouteConfig(String appId, String medOrgNo);
+    MmpRouteConfig queryMmpayRouteConfig(String appId, String medOrgNo) throws IOException;
 
 
     /**
@@ -27,7 +29,7 @@ public interface IMmpayRouteService {
      * @param appId
      * @return
      */
-    MmpRouteConfig queryByAppId(String appId);
+    MmpRouteConfig queryByAppId(String appId) throws IOException;
 
 
 }
