@@ -1,0 +1,12 @@
+[
+  {
+    "appId": "1ASEH0U4B0001518A8C00000D9C6C40E",
+    "appSecret": "1ASEH0U400051518A8C0000099043D28",
+    "mmpWebUrl": "https://www.mstpay.com:1809/mmpay-web/gateway"
+  },
+  {
+    "appId": "1EDAKJJH60000100007F0000D86497F2",
+    "appSecret": "1EDAKJJHA0010100007F000092514C91",
+    "mmpWebUrl": "https://www.mstpay.com:1809/mmpay-web/gateway"
+  }
+]
