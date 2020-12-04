@@ -53,6 +53,16 @@ public class MmpayRouteController {
             String requestMessage = StreamUtil.readInputStream(inputStreamReader);
             LOG.info("接收到商户请求，请求报文为：{}", requestMessage);
             requestParams = parseRequestParam(requestMessage);
+
+            String signType = "MD5";
+            String encryptType = "DES";
+            responseParams.setAppId(requestParams.getAppId());
+            responseParams.setTransType(requestParams.getTransType());
+            responseParams.setVersion(requestParams.getVersion());
+            responseParams.setSignType(signType);
+            responseParams.setEncryptType(encryptType);
+            responseParams.setTimestamp(requestParams.getTimestamp());
+
             RequestParams reqParams = decryptData(requestParams, requestParams.getAppId());
             JSONObject param = JSONObject.parseObject(JSON.toJSONString(reqParams.getParam()));
             if (param == null) {
@@ -72,7 +82,7 @@ public class MmpayRouteController {
             responseParams.setRespMsg(MessageCode.ERROR_UNKOWN_MS);
             LOG.error("SDK支付出现异常", e);
         }
-
+        LOG.info("接收到商户请求，响应报文为：{}", responseParams);
         return responseParams;
     }
 

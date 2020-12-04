@@ -38,7 +38,7 @@ public class HttpUtil {
 	}
 
 	public static String request(String urlStr, String requestMessage, URLType urlType) throws HttpException {
-		return request(urlStr, null, requestMessage, urlType, "UTF-8", null, 10000, 15000);
+		return request(urlStr, null, requestMessage, urlType, "UTF-8", null, 10000, 60000);
 	}
 
 	/**
